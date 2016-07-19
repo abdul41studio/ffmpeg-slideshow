@@ -1,0 +1,16 @@
+= form_for [slideshow] do |f|
+  .form-horizontal
+    - if slideshow.errors.any?
+      #error_explanation
+        h2 = "#{pluralize(slideshow.errors.count, "error")} prohibited this slideshow from being saved:"
+        ul
+          - slideshow.errors.full_messages.each do |message|
+            li = message
+    .form-group
+      = f.label :name, class: "control-label col-sm-2"
+      .col-sm-6
+        = f.text_field :name, class: "form-control"
+    .form-group
+      .col-sm-2
+      .col-sm-6
+        .actions = f.submit "Process", class: "btn btn-default"

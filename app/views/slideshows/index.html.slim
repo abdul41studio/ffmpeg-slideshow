@@ -1,0 +1,21 @@
+.row
+  .col-sm-2
+    = link_to "New Slideshow", new_slideshow_path, class: "btn btn-default"
+-if !@slideshows.empty?
+  h1 Listing slideshows
+
+  table.table.table-bordered
+    thead
+      tr
+        th Name
+        th
+        th
+        th
+
+    tbody
+      - @slideshows.each do |slideshow|
+        tr
+          td = slideshow.name
+          td = link_to 'Show', slideshow_slide_show_path(slideshow_id: slideshow.id), class: "btn btn-default"
+          td = link_to 'Edit', slideshow_media_path(slideshow_id: slideshow.id), class: "btn btn-default"
+          td = link_to 'Destroy', slideshow_path(id: slideshow.id), data: {:confirm => 'Are you sure?'}, :method => :delete, class: "btn btn-default"

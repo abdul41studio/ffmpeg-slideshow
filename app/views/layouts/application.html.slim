@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title
+      | ImageApp
+    link[href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css"]
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    = stylesheet_link_tag '//vjs.zencdn.net/4.12/video-js.css'
+    = csrf_meta_tags
+  body
+    nav.navbar.navbar-default[role="navigation"]
+      .container
+        .navbar-header
+          = link_to root_url, class: "navbar-brand" do
+            b
+              | FFMPEG App
+        / #navbarCollapse.collapse.navbar-collapse
+        /   .nav.navbar-nav.navbar-right
+        /     ul.list-inline
+        /       li = link_to "Slideshows", slideshows_path, class: "navbar-brand"
+        /       li = link_to "Video", "", class: "navbar-brand"
+    .container
+      = yield
+    = yield :js

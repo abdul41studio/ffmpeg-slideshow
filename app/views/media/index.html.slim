@@ -1,0 +1,55 @@
+.row[style="margin-top: 50px;"]
+  .col-lg-7.col-lg-offset-1
+    button.btn.btn-primary[type="button" data-toggle="modal" data-target="#myModal"]
+      | Upload New
+  .col-lg-2.col-lg-offset-1
+    = link_to "Create Slideshow", slideshow_create_video_path, method: :post, class: "btn btn-success btn-create-slideshow", disabled: @media.empty?
+.row[style="margin-top: 25px;"]
+  .col-lg-10.col-lg-offset-1
+    .well
+      h4
+        b
+          | Media
+      hr
+      .row
+        .col-lg-10
+          = form_tag "/slideshows/#{@slideshow.id}/delete_media", method: :delete do
+            = submit_tag 'Delete', id: 'delete', class: 'btn btn-danger', disabled: @media.empty?
+            br
+            br
+            .row
+              #media-contents.col-lg-12
+                - if @media.empty?
+                  h5#no-media
+                    | No Media Found
+                - else
+                  - @media.each do |media|
+                    .col-lg-4
+                      .thumbnail
+                        = image_tag media.file_name.url
+                        .caption
+                          p
+                            = check_box_tag 'media[]', media.id
+        .col-lg-1
+          = link_to 'Delete All', slideshow_delete_all_path, method: :delete, id: 'delete-all', class: 'btn btn-danger', disabled: @media.empty?
+br
+br
+= link_to "Back to list slideshow", slideshows_path, class: "btn btn-default"
+#myModal.modal.fade[tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"]
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close[type="button" data-dismiss="modal"]
+          span[aria-hidden="true"]
+            | ×
+          span.sr-only
+            | Close
+        h4#myModalLabel.modal-title
+          | Upload New
+      .modal-body
+        = form_tag "/slideshows/#{@slideshow.id}/media", method: :post, class: 'dropzone form', id: 'media-dropzone' do
+          .fallback
+            = file_field_tag 'media', multiple: true
+      .modal-footer
+        button.btn.btn-default[type="button" data-dismiss="modal"]
+          | Close
