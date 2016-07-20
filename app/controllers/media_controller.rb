@@ -16,7 +16,11 @@ class MediaController < ApplicationController
   end
 
   def create_video
-    `ffmpeg -framerate 1/5 -start_number 1 -i public/uploads/medium/file_name/#{@slideshow.indicator_name}/image%d.jpg -i app/assets/audios/music.mp3 -c:v libx264 -r 30 -pix_fmt yuv420p -shortest public/uploads/tmp/video.mp4`
+    if Rails.env.production?
+      `ffmpeg -framerate 1/5 -start_number 1 -i app/public/uploads/medium/file_name/#{@slideshow.indicator_name}/image%d.jpg -i app/assets/audios/music.mp3 -c:v libx264 -r 30 -pix_fmt yuv420p -shortest app/public/uploads/tmp/video.mp4`
+    else
+      `ffmpeg -framerate 1/5 -start_number 1 -i public/uploads/medium/file_name/#{@slideshow.indicator_name}/image%d.jpg -i app/assets/audios/music.mp3 -c:v libx264 -r 30 -pix_fmt yuv420p -shortest public/uploads/tmp/video.mp4`
+    end
     @slideshow.video =  File.open("public/uploads/tmp/video.mp4")
     @slideshow.save
     if File.exist?("public/uploads/tmp/video.mp4")
