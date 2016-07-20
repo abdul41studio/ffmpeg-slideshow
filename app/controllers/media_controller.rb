@@ -1,5 +1,4 @@
 class MediaController < ApplicationController
-
   before_action :set_slideshow
 
   def index
@@ -32,7 +31,6 @@ class MediaController < ApplicationController
 
   def delete_media
     Medium.where(id: params[:media]).destroy_all
-
     @slideshow.medium_reorder
     redirect_to slideshow_media_path(slideshow_id: @slideshow.id)
   end
