@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160719064611) do
+ActiveRecord::Schema.define(version: 20160720064611) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "media", force: :cascade do |t|
     t.string   "file_name"
@@ -18,7 +21,7 @@ ActiveRecord::Schema.define(version: 20160719064611) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.integer  "order"
-    t.index ["slideshow_id"], name: "index_media_on_slideshow_id"
+    t.index ["slideshow_id"], name: "index_media_on_slideshow_id", using: :btree
   end
 
   create_table "slideshows", force: :cascade do |t|
@@ -36,4 +39,5 @@ ActiveRecord::Schema.define(version: 20160719064611) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "media", "slideshows"
 end

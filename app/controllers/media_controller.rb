@@ -17,14 +17,12 @@ class MediaController < ApplicationController
   end
 
   def create_video
+    `ffmpeg -framerate 1/5 -start_number 1 -i public/uploads/medium/file_name/#{@slideshow.indicator_name}/image%d.jpg -i app/assets/audios/music.mp3 -c:v libx264 -r 30 -pix_fmt yuv420p -shortest public/uploads/tmp/video.mp4`
+    @slideshow.video =  File.open("public/uploads/tmp/video.mp4")
+    @slideshow.save
     if File.exist?("public/uploads/tmp/video.mp4")
       File.delete("public/uploads/tmp/video.mp4")
     end
-    `ffmpeg -framerate 1/5 -start_number 1 -i public/uploads/medium/file_name/#{@slideshow.indicator_name}/image%d.jpg -i app/assets/audios/music.mp3 -c:v libx264 -r 30 -pix_fmt yuv420p -shortest public/uploads/tmp/video.mp4`
-
-    @slideshow.video =  File.open("public/uploads/tmp/video.mp4")
-    @slideshow.save
-
     redirect_to slideshow_slide_show_path
   end
 
