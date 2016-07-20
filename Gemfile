@@ -36,7 +36,6 @@ gem 'carrierwave'
 gem 'rmagick'
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
-gem 'aws-sdk'
 gem 'fog'
 
 group :development, :test do
