@@ -37,4 +37,11 @@ class Slideshow < ApplicationRecord
       end
     end
   end
+
+  def last_picture_update(count)
+    media.order(created_at: :desc).limit(count).each do |medium|
+      name_order = "image#{medium.order}.jpg"
+      medium.update(file_name: name_order)
+    end
+  end
 end

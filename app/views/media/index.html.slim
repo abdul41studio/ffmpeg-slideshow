@@ -47,9 +47,10 @@ br
         h4#myModalLabel.modal-title
           | Upload New
       .modal-body
-        = form_tag "/slideshows/#{@slideshow.id}/media", method: :post, class: 'dropzone form', id: 'media-dropzone' do
+        = form_tag "/slideshows/#{@slideshow.id}/media", method: :post, class: 'dropzone form', id: 'media-dropzone', multipart: true do
           .fallback
             = file_field_tag 'media', multiple: true
+          = hidden_field_tag "count", 0
       .modal-footer
         button.btn.btn-default[type="button" data-dismiss="modal"]
           | Close

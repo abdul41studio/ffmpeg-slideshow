@@ -3,16 +3,23 @@ class MediaController < ApplicationController
 
   def index
     @slideshow.check_picture
-    @media = Medium.all
+    @media = Medium.all.order(created_at: :asc)
   end
 
   def create
-    @media = @slideshow.media.new(file_name: params[:file])
-    if @media.save!
-      render json: @media
-    else
-      render json: { error: 'Failed to process' }, status: 422
+    count = params[:count].to_i
+    params[:file].each do |key, value|
+      @slideshow.media.create(file_name: value)
     end
+    @slideshow.last_picture_update(count)
+    @media = @slideshow.media.order(created_at: :desc).limit(count).reverse
+    render json: @media
+    # @media = @slideshow.media.new(file_name: params[:file])
+    # if @media.save!
+    #   render json: @media
+    # else
+    #   render json: { error: 'Failed to process' }, status: 422
+    # end
   end
 
   def create_video
@@ -30,13 +37,19 @@ class MediaController < ApplicationController
   end
 
   def delete_media
-    Medium.where(id: params[:media]).destroy_all
+    Medium.where(id: params[:media]).each do |medium|
+      medium.remove_file_name!
+      medium.destroy
+    end
     @slideshow.medium_reorder
     redirect_to slideshow_media_path(slideshow_id: @slideshow.id)
   end
 
   def delete_all
-    @slideshow.media.delete_all
+    @slideshow.media.each do |medium|
+      medium.remove_file_name!
+      medium.destroy
+    end
     redirect_to slideshow_media_path(slideshow_id: @slideshow.id)
   end
 
